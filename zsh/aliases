@@ -30,6 +30,11 @@ alias scaffold='script/generate nifty_scaffold'
 alias migrate='rake db:migrate db:test:clone'
 alias rst='touch tmp/restart.txt'
 
+# grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
 # other
 alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 alias watch="watchr ~/.watchr/rails.watcher"

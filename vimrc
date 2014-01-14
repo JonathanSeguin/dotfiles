@@ -1,5 +1,3 @@
-" based on http://github.com/jferris/config_files/blob/master/vimrc
-
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -19,6 +17,10 @@ set incsearch		" do incremental searching
 set visualbell
 set directory=~/tmp
 
+set cursorline
+hi Cursorline ctermbg=Red guibg=#771c1c
+
+
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
@@ -35,6 +37,7 @@ endif
 
 " Switch wrap off for everything
 " set nowrap
+set wrap!
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -88,10 +91,17 @@ endif " has("autocmd")
   " set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
 " endif
 
-" Softtabs, 2 spaces
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set ts=4
+set shiftwidth=4
 set expandtab
+
+" Automagically change working directory to opened file
+set autochdir
+
+" GUI tab labels
+set guitablabel=%!expand(\"\%:t\")
+
 
 " Always display the status line
 set laststatus=2
@@ -100,21 +110,21 @@ set laststatus=2
 let mapleader = ","
 
 " Leader shortcuts for Rails commands
-map <Leader>m :Rmodel 
-map <Leader>c :Rcontroller 
-map <Leader>v :Rview 
-map <Leader>u :Runittest 
-map <Leader>f :Rfunctionaltest 
-map <Leader>tm :RTmodel 
-map <Leader>tc :RTcontroller 
-map <Leader>tv :RTview 
-map <Leader>tu :RTunittest 
-map <Leader>tf :RTfunctionaltest 
-map <Leader>sm :RSmodel 
-map <Leader>sc :RScontroller 
-map <Leader>sv :RSview 
-map <Leader>su :RSunittest 
-map <Leader>sf :RSfunctionaltest 
+map <Leader>m :Rmodel
+map <Leader>c :Rcontroller
+map <Leader>v :Rview
+map <Leader>u :Runittest
+map <Leader>f :Rfunctionaltest
+map <Leader>tm :RTmodel
+map <Leader>tc :RTcontroller
+map <Leader>tv :RTview
+map <Leader>tu :RTunittest
+map <Leader>tf :RTfunctionaltest
+map <Leader>sm :RSmodel
+map <Leader>sc :RScontroller
+map <Leader>sv :RSview
+map <Leader>su :RSunittest
+map <Leader>sf :RSfunctionaltest
 
 map <F6> :NERDTreeToggle<cr>
 map ` :NERDTreeToggle<cr>
@@ -206,9 +216,9 @@ endif
  end
 
 
-colorscheme solarized
+colorscheme pablo
 " let g:solarized_contrast="high"
- 
+
 set guifont=Menlo:h16
 
 " function! ToggleBackground()
@@ -263,7 +273,72 @@ set complete=.,t
 set ignorecase
 set smartcase
 
+" common typos
+cabbrev q quit
+cabbrev Q quit
+cabbrev w write
+cabbrev W write
+
+" window
+nmap <leader>sw<left>  :topleft  vnew<CR>
+nmap <leader>sw<right> :botright vnew<CR>
+nmap <leader>sw<up>    :topleft  new<CR>
+nmap <leader>sw<down>  :botright new<CR>
+
+" buffer
+nmap <leader>s<left>   :leftabove  vnew<CR>
+nmap <leader>s<right>  :rightbelow vnew<CR>
+nmap <leader>s<up>     :leftabove  new<CR>
+nmap <leader>s<down>   :rightbelow new<CR>
+
+inoremap jj <Esc>
+
 " Tags
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 set tags=./tags;
+
+" Strip Trailing Whitespaces
+function! StripTrailingWhitespaces()
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  %s/\s$//e
+  let @/=_s
+  call cursor(l, c)
+endfunction
+autocmd BufWritePre * :call StripTrailingWhitespaces()
+
+" visual block calculator
+
+function MyCalc(str)
+  if exists("g:MyCalcRounding")
+    return system("echo 'x=" . a:str . ";d=.5/10^" . g:MyCalcPresition
+          \. ";if (x<0) d=-d; x+=d; scale=" . g:MyCalcPresition . ";print x/1' | bc -l")
+  else
+    return system("echo 'scale=" . g:MyCalcPresition . " ; print " . a:str . "' | bc -l")
+  endif
+endfunction
+
+" Control the precision with this variable
+let g:MyCalcPresition = 2
+" Comment this if you don't want rounding
+let g:MyCalcRounding = 1
+" Use \C to replace the current line of math expression(s) by the value of the computation:
+map <silent> <Leader>c :s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
+" Same for a visual selection block
+vmap <silent> <Leader>c :B s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
+" With \C= don't replace, but add the result at the end of the current line
+map <silent> <Leader>c= :s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+" Same for a visual selection block
+vmap <silent> <Leader>c= :B s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+" Try: :B s/.*/\=MyCalc("1000 - " . submatch(0))/
+" The concatenation is important, since otherwise it will try
+" to evaluate things like in ":echo 1000 - ' 1748.24'"
+vmap <Leader>c+ :B s/.*/\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+vmap <Leader>c- :B s/.*/\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+" With \Cs you add a block of expressions, whose result appears in the command line
+vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\n","+","g"))<CR>:silent :noh<CR>
+" Try: :MyCalc 12.7 + sqrt(98)
+command! -nargs=+ MyCalc :echo MyCalc("<args>")
+
 

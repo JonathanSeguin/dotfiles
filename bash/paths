@@ -3,5 +3,3 @@ export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
-
-
