@@ -102,12 +102,11 @@ set autochdir
 " GUI tab labels
 set guitablabel=%!expand(\"\%:t\")
 
-
 " Always display the status line
 set laststatus=2
 
 " \ is the leader character
-let mapleader = ","
+"let mapleader = ","
 
 " Leader shortcuts for Rails commands
 map <Leader>m :Rmodel
@@ -145,13 +144,6 @@ map <leader>] :cn<CR>
 map <leader>c "+y
 map <leader>v "+p
 map <leader>u :u<CR>
-
-" Command-t settings
-let g:CommandTMatchWindowAtTop=1
-let g:CommandTCancelMap='<Esc>'
-"let g:CommandTSelectNextMap='<Down>'
-let g:CommandTSelectPrevMap=['<C-p>', '<C-k>', '<Esc>OA', '<Up>']
-map <leader>r :CommandTFlush<CR>
 
 " Hide search highlighting
 map <Leader>h :set invhls <CR>
