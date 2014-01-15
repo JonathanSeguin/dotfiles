@@ -329,6 +329,10 @@ hi Cursorline cterm=NONE ctermbg=234 guibg=#1c1c1c
 
 highlight clear SignColumn
 
+" folding
+set foldmethod=indent
+set foldlevelstart=20
+
 " insert mode vertical line in term
 let &t_SI .= "\<Esc>[6 q"
 let &t_EI .= "\<Esc>[2 q"
