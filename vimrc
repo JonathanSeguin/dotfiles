@@ -14,7 +14,7 @@ set ruler		    " show the cursor position all the time
 set showcmd		    " display incomplete commands
 set incsearch		" do incremental searching
 set visualbell
-set directory=~/tmp
+set directory=~/.tmp
 set nowrap
 
 colorscheme pablo
@@ -326,6 +326,8 @@ command! -nargs=+ MyCalc :echo MyCalc("<args>")
 " down here as it didn't seem to be applied if it appeared earlier in the file
 set cursorline
 hi Cursorline cterm=NONE ctermbg=234 guibg=#1c1c1c
+
+highlight clear SignColumn
 
 " insert mode vertical line in term
 let &t_SI .= "\<Esc>[6 q"
