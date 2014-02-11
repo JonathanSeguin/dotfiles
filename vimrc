@@ -3,7 +3,10 @@
 set nocompatible
 set mouse=a
 
-" allow backspacing over everything in insert mode
+" Shorten messages and don't show intro
+set shortmess=atI
+
+" Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
 set clipboard=unnamed
@@ -16,6 +19,7 @@ set incsearch		" do incremental searching
 set visualbell
 set directory=~/.tmp
 set nowrap
+set omnifunc=syntaxcomplete#Complete
 
 colorscheme pablo
 
@@ -99,8 +103,21 @@ set guitablabel=%!expand(\"\%:t\")
 " Always display the status line
 set laststatus=2
 
-" \ is the leader character
+" new leader character
 "let mapleader = ","
+
+" that shift key already gets too much attention
+nore ; :
+"nore , ;
+
+" resize current buffer by +/- 5
+nnoremap <silent> + :resize +5<CR>
+nnoremap <silent> _ :resize -5<CR>
+nnoremap <silent> = :vertical resize +5<CR>
+nnoremap <silent> - :vertical resize -5<CR>
+
+"imap <A-left> <C-O>b
+"imap <A-right> <C-O>e
 
 " Leader shortcuts for Rails commands
 map <Leader>m :Rmodel
@@ -171,6 +188,11 @@ imap <C-F> <C-R>=expand("%")<CR>
 " Maps autocomplete to tab
 "imap <Tab> <C-N>
 
+imap <D-Right> $
+
+imap <M-Left> escape-[1;5D
+imap <M-Right> escape-[1;5C
+
 " arrow
 imap <C-L> <Space>=><Space>
 
@@ -202,8 +224,7 @@ endif
 "   set background=dark
 " end
 
-
-set guifont=Menlo:h16
+" set guifont=Menlo:h16
 
 " function! ToggleBackground()
 "   if (g:solarized_style=="dark")
@@ -273,11 +294,30 @@ nmap <leader>s<right>  :rightbelow vnew<CR>
 nmap <leader>s<up>     :leftabove  new<CR>
 nmap <leader>s<down>   :rightbelow new<CR>
 
-inoremap jj <Esc>
+"inoremap jj <Esc>
+
+" Vundle
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+" My bundles here:
+Bundle 'Valloric/YouCompleteMe'
+
+" YouCompleteMe
+let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+let g:EclimCompletionMethod = 'omnifunc'
 
 " Tags
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 set tags=./tags;
+
+
+" Latex-Box (OSX)
+let g:LatexBox_viewer = "open"
+let g:LatexBox_latexmk_async=1
 
 " Strip Trailing Whitespaces
 function! StripTrailingWhitespaces()
@@ -291,7 +331,6 @@ endfunction
 autocmd BufWritePre * :call StripTrailingWhitespaces()
 
 " visual block calculator
-
 function! MyCalc(str)
     if exists("g:MyCalcRounding")
         return system("echo 'x=" . a:str . ";d=.5/10^" . g:MyCalcPresition
@@ -306,20 +345,20 @@ let g:MyCalcPresition = 2
 " Comment this if you don't want rounding
 let g:MyCalcRounding = 1
 " Use \\\\C to replace the current line of math expression(s) by the value of the computation:
-map <silent> <Leader>c :s/.*/\\\\=MyCalc(submatch(0))/<CR>:noh<CR>
+map <silent> <Leader>c :s/.*/\\\\\\\\=MyCalc(submatch(0))/<CR>:noh<CR>
 " Same for a visual selection block
-vmap <silent> <Leader>c :B s/.*/\\\\=MyCalc(submatch(0))/<CR>:noh<CR>
+vmap <silent> <Leader>c :B s/.*/\\\\\\\\=MyCalc(submatch(0))/<CR>:noh<CR>
 " With \\\\C= don't replace, but add the result at the end of the current line
-map <silent> <Leader>c= :s/.*/\\\\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+map <silent> <Leader>c= :s/.*/\\\\\\\\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
 " Same for a visual selection block
-vmap <silent> <Leader>c= :B s/.*/\\\\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
-" Try: :B s/.*/\\\\=MyCalc("1000 - " . submatch(0))/
+vmap <silent> <Leader>c= :B s/.*/\\\\\\\\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+" Try: :B s/.*/\\\\\\\\\\\\\\\\=MyCalc("1000 - " . submatch(0))/
 " The concatenation is important, since otherwise it will try
 " to evaluate things like in ":echo 1000 - ' 1748.24'"
-vmap <Leader>c+ :B s/.*/\\\\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
-vmap <Leader>c- :B s/.*/\\\\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+vmap <Leader>c+ :B s/.*/\\\\\\\\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+vmap <Leader>c- :B s/.*/\\\\\\\\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
 " With \\\\Cs you add a block of expressions, whose result appears in the command line
-vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\\\\n","+","g"))<CR>:silent :noh<CR>
+vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\\\\\\\\n","+","g"))<CR>:silent :noh<CR>
 " Try: :MyCalc 12.7 + sqrt(98)
 command! -nargs=+ MyCalc :echo MyCalc("<args>")
 
