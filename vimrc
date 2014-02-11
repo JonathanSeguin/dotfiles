@@ -113,8 +113,8 @@ nore ; :
 " resize current buffer by +/- 5
 nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> _ :resize -5<CR>
-nnoremap <silent> = :vertical resize +5<CR>
-nnoremap <silent> - :vertical resize -5<CR>
+nnoremap <silent> - :vertical resize +5<CR>
+nnoremap <silent> = :vertical resize -5<CR>
 
 "imap <A-left> <C-O>b
 "imap <A-right> <C-O>e
