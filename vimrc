@@ -100,6 +100,10 @@ set autochdir
 " GUI tab labels
 set guitablabel=%!expand(\"\%:t\")
 
+" GUI scrollbar
+set guioptions-=r
+set guioptions-=L
+
 " Always display the status line
 set laststatus=2
 
@@ -110,11 +114,11 @@ set laststatus=2
 nore ; :
 "nore , ;
 
-" resize current buffer by +/- 5
-nnoremap <silent> + :resize +5<CR>
-nnoremap <silent> _ :resize -5<CR>
-nnoremap <silent> - :vertical resize +5<CR>
-nnoremap <silent> = :vertical resize -5<CR>
+" resize current buffer window by +/- 5
+nnoremap <silent> <Leader>+ :resize +5<CR>
+nnoremap <silent> <Leader>_ :resize -5<CR>
+nnoremap <silent> <Leader>- :vertical resize +5<CR>
+nnoremap <silent> <Leader>= :vertical resize -5<CR>
 
 "imap <A-left> <C-O>b
 "imap <A-right> <C-O>e
@@ -281,6 +285,8 @@ cabbrev q quit
 cabbrev Q quit
 cabbrev w write
 cabbrev W write
+cabbrev wQ wq
+cabbrev Wq wq
 
 " window
 nmap <leader>sw<left>  :topleft  vnew<CR>
@@ -307,7 +313,7 @@ Bundle 'gmarik/vundle'
 Bundle 'Valloric/YouCompleteMe'
 
 " YouCompleteMe
-let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+" let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 let g:EclimCompletionMethod = 'omnifunc'
 
 " Tags
