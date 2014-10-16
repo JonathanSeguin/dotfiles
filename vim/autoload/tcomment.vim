@@ -74,7 +74,7 @@ function! tcomment#Comment(beg, end, ...)
     endif
     let cms0 = s:BlockGetCommentString(cms)
     let cms0 = escape(cms0, '\')
-    " make whitespace optional; this conflicts with comments that require some 
+    " make whitespace optional; this conflicts with comments that require some
     " whitespace
     let cmtCheck = substitute(cms0, '\([	 ]\)', '\1\\?', 'g')
     " turn commentstring into a search pattern
@@ -96,7 +96,7 @@ function! tcomment#Comment(beg, end, ...)
         let cmtCheck   = escape('\V\^\(\s\{-}\)'. cmtCheck .'\$', '"/\')
         " final pattern for commenting
         let cmtReplace = escape(cms0, '"/')
-        silent exec a:beg .','. a:end .'s/\V'. 
+        silent exec a:beg .','. a:end .'s/\V'.
                     \ s:StartRx(cstart) . indentStr .'\zs\(\.\{-}\)'. s:EndRx(cend) .'/'.
                     \ '\=s:ProcessedLine('. uncomment .', submatch(0), "'. cmtCheck .'", "'. cmtReplace .'")/ge'
     endif
@@ -178,7 +178,7 @@ function! tcomment#CommentAs(beg, end, commentAnyway, filetype, ...)
     elseif a:filetype =~ '_inline$'
         let commentMode = 'I'
         let ft = substitute(a:filetype, '_inline$', '', '')
-    else 
+    else
         let commentMode = 'G'
         let ft = a:filetype
     endif
@@ -260,7 +260,7 @@ function! s:GetCommentString(beg, end, commentMode, ...)
                 let cms = cms .' '. s:EncodeCommentPart(b:commentEnd)
             endif
             return s:GetCustomCommentString(&filetype, a:commentMode, cms)
-        elseif g:tcommentGuessFileType || (exists('g:tcommentGuessFileType_'. &filetype) 
+        elseif g:tcommentGuessFileType || (exists('g:tcommentGuessFileType_'. &filetype)
                     \ && g:tcommentGuessFileType_{&filetype} =~ '[^0]')
             if g:tcommentGuessFileType_{&filetype} == 1
                 let altFiletype = ''
@@ -393,7 +393,7 @@ function! s:CommentLines(beg, end, cstart, cend, uncomment, cmtCheck, cms0, inde
     let cmtCheck   = escape('\V\^\(\s\{-}\)'. a:cmtCheck .'\$', '"/\')
     " final pattern for commenting
     let cmtReplace = escape(a:cms0, '"/')
-    silent exec a:beg .','. a:end .'s/\V'. 
+    silent exec a:beg .','. a:end .'s/\V'.
                 \ s:StartRx(a:cstart) . a:indentStr .'\zs\(\.\{-}\)'. s:EndRx(a:cend) .'/'.
                 \ '\=s:ProcessedLine('. a:uncomment .', submatch(0), "'. a:cmtCheck .'", "'. cmtReplace .'")/ge'
 endf
@@ -429,7 +429,7 @@ function! s:CommentBlock(beg, end, uncomment, checkRx, replace, indentStr)
 endf
 
 " inspired by Meikel Brandmeyer's EnhancedCommentify.vim
-" this requires that a syntax names are prefixed by the filetype name 
+" this requires that a syntax names are prefixed by the filetype name
 " s:GuessFileType(beg, end, commentMode, filetype, ?fallbackFiletype)
 function! s:GuessFileType(beg, end, commentMode, filetype, ...)
     if a:0 >= 1 && a:1 != ''
@@ -484,7 +484,7 @@ function! s:GuessCurrentCommentString(commentMode)
         return &commentstring
     endif
     if &comments != s:defaultComments
-        " the commentstring is the default one, so we assume that it wasn't 
+        " the commentstring is the default one, so we assume that it wasn't
         " explicitly set; we then try to reconstruct &cms from &comments
         let cms = s:ConstructFromComments(a:commentMode)
         if cms != s:nullCommentString
@@ -492,7 +492,7 @@ function! s:GuessCurrentCommentString(commentMode)
         endif
     endif
     if valid_cms
-        " Before &commentstring appeared not to be set. As we don't know 
+        " Before &commentstring appeared not to be set. As we don't know
         " better we return it anyway if it is valid
         return &commentstring
     else

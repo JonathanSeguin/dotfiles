@@ -3,9 +3,10 @@ alias ..='cd ..'
 
 # ls
 alias ls="ls -GF"
-alias l="ls -lAh"
+alias l="ls -GF"
 alias ll="ls -l"
 alias la='ls -A'
+alias sl='ls'
 
 # git
 alias gl='git pull --rebase --stat'

@@ -115,10 +115,10 @@ nore ; :
 "nore , ;
 
 " resize current buffer window by +/- 5
-nnoremap <silent> <Leader>+ :resize +5<CR>
-nnoremap <silent> <Leader>_ :resize -5<CR>
-nnoremap <silent> <Leader>- :vertical resize +5<CR>
-nnoremap <silent> <Leader>= :vertical resize -5<CR>
+" nnoremap <silent> <Leader>+ :resize +5<CR>
+" nnoremap <silent> <Leader>_ :resize -5<CR>
+" nnoremap <silent> <Leader>- :vertical resize +5<CR>
+" nnoremap <silent> <Leader>= :vertical resize -5<CR>
 
 "imap <A-left> <C-O>b
 "imap <A-right> <C-O>e
@@ -267,8 +267,7 @@ endif
 set number
 " set numberwidth=5
 
-" Snippets are activated by Shift+Tab
-let g:snippetsEmu_key = "<S-Tab>"
+" note : Snippets are activated by Shift+Tab
 
 " Tab completion options
 " (only complete to the longest unambiguous match, and show a menu)
@@ -313,8 +312,8 @@ Bundle 'gmarik/vundle'
 Bundle 'Valloric/YouCompleteMe'
 
 " YouCompleteMe
-" let g:ycm_path_to_python_interpreter = '/usr/bin/python'
-let g:EclimCompletionMethod = 'omnifunc'
+" let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+" let g:EclimCompletionMethod = 'omnifunc'
 
 " Tags
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
@@ -381,3 +380,44 @@ set foldlevelstart=20
 " insert mode vertical line in term
 let &t_SI .= "\<Esc>[6 q"
 let &t_EI .= "\<Esc>[2 q"
+
+let g:PythonPathLoaded=1
+
+function! LoadPythonPath()
+py <<EOF
+    # load PYTHONPATH into vim, this lets you hover over a module name
+    # and type 'gf' (for goto file) and open that file in vim. Useful
+    # and easier than rope for simple tasks
+    import os.path
+    import sys
+    import vim
+    for p in sys.path:
+        if os.path.isdir(p):
+            vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+EOF
+endfunction
+
+function! GetPythonPath()
+    if !exists("g:PythonPathLoaded")
+        call LoadPythonPath()
+        return
+    elseif g:PythonPathLoaded
+        return
+    else
+        call LoadPythonPath()
+    endif
+endfunction
+
+function! UnloadPythonPath()
+
+py <<EOF
+    # load PYTHONPATH into vim, this lets you hover over a module name
+    # and type 'gf' (for goto file) and open that file in vim. Useful
+    # and easier than rope for simple tasks
+for p in sys.path:
+    if os.path.isdir(p):
+        vim.command(r"set path-=%s" % (p.replace(" ", r"\ ")))
+EOF
+
+    let g:PythonPathLoaded = 0
+endfunction

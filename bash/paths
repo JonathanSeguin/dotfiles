@@ -1,6 +1,7 @@
-export PATH="~/bin:~/.bin:/usr/local/homebrew/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/git/bin:$PATH"
+export PATH="~/bin:~/.bin:/usr/local/homebrew/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/git/bin:/usr/bin:$PATH"
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
-export PYTHONPATH="/usr/local/lib/python2.7/site-packages:/usr/lib/python2.7:/Library/Python/2.7/site-packages:$PYTHONPATH"
+export PYTHONPATH="/usr/lib/python2.7/site-packages:/usr/local/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:$PYTHONPATH"
+export WORKON_HOME=~/.virtualenvs
