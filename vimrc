@@ -9,7 +9,17 @@ set shortmess=atI
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-set clipboard=unnamed
+set runtimepath=~/.vim/,~/.vim,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/vim72,/usr/share/vim/vimfiles,/usr/share/vim/addons/after,~/.vim/after*/
+
+" set guifont=Droid_Sans_Mono_for_Powerline_12
+
+let g:airline_powerline_fonts = 1
+
+if $COLORTERM == 'gnome-terminal'
+  set t_Co=256
+endif
+
+set clipboard^=unnamedplus
 set nobackup
 set nowritebackup
 set history=50		" keep 50 lines of command line history
@@ -30,16 +40,11 @@ map Q gq
 " text is lost and it only works for putting the current register.
 "vnoremap p "_dp
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-    syntax on
-    set hlsearch
-endif
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
-    call pathogen#runtime_append_all_bundles()
+"    call pathogen#runtime_append_all_bundles()
+execute pathogen#infect()
     " Enable file type detection.
     " Use the default filetype settings, so that mail gets 'tw' set to 72,
     " 'cindent' is on in C files, etc.
@@ -80,6 +85,14 @@ else
     set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
+
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+    syntax on
+    set hlsearch
+endif
 
 " if has("folding")
 "   set foldenable
@@ -302,14 +315,14 @@ nmap <leader>s<down>   :rightbelow new<CR>
 "inoremap jj <Esc>
 
 " Vundle
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set rtp+=~/.vim/bundle/vundle/
+" call vundle#rc()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
+"Bundle 'gmarik/vundle'
 " My bundles here:
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
 
 " YouCompleteMe
 " let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
@@ -378,8 +391,8 @@ set foldmethod=indent
 set foldlevelstart=20
 
 " insert mode vertical line in term
-let &t_SI .= "\<Esc>[6 q"
-let &t_EI .= "\<Esc>[2 q"
+" let &t_SI .= "\\<Esc>[6 q"
+" let &t_EI .= "\\<Esc>[2 q"
 
 let g:PythonPathLoaded=1
 
