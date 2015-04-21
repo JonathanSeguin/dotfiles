@@ -2,8 +2,8 @@
 alias ..='cd ..'
 
 # ls
-alias ls="ls -GF"
-alias l="ls -GF"
+alias ls="ls -G --color"
+alias l="ls -G --color"
 alias ll="ls -l"
 alias la='ls -A'
 alias sl='ls'
@@ -38,10 +38,7 @@ alias egrep='egrep --color=auto'
 
 # other
 #alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
-alias watch="watchr ~/.watchr/rails.watcher"
 alias rsync="rsync --progress"
-alias jekyll="jekyll --pygments --server --auto"
-alias rt="ruby -Itest"
 alias h="history 10"
 
 # commands starting with % for pasting from web

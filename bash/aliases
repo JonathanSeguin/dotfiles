@@ -1,7 +1,6 @@
 . ~/.zsh/aliases
 
-# changing directory to project
-function dv { cd ~/Dev/$1*; }
+function pr { cd ~/platform_repos; }
 
 # misc
 alias reload='. ~/.bash_profile'

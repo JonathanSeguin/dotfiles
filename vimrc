@@ -13,7 +13,8 @@ set runtimepath=~/.vim/,~/.vim,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/a
 
 " set guifont=Droid_Sans_Mono_for_Powerline_12
 
-let g:airline_powerline_fonts = 1
+" (linux) remember buffer in X clipboard on exit
+autocmd VimLeave * call system("xsel -ib", getreg('+'))
 
 if $COLORTERM == 'gnome-terminal'
   set t_Co=256
@@ -320,11 +321,11 @@ nmap <leader>s<down>   :rightbelow new<CR>
 "Undo levels (why not)
 set undolevels=20000
 
+set undofile
+set undodir=~/.tmp
+
 "Undo highlight after search
 nnoremap <CR> :noh<CR><CR>
-
-set undofile
-set undodir=~/.tmp/
 
 "inoremap jj <Esc>
 
