@@ -267,6 +267,11 @@ endif
 set number
 " set numberwidth=5
 
+" Airline patched fonts
+let g:airline_powerline_fonts = 1
+" Airline tabs
+let g:airline#extensions#tabline#enabled = 1
+
 " note : Snippets are activated by Shift+Tab
 
 " Tab completion options
@@ -299,7 +304,35 @@ nmap <leader>s<right>  :rightbelow vnew<CR>
 nmap <leader>s<up>     :leftabove  new<CR>
 nmap <leader>s<down>   :rightbelow new<CR>
 
+"Undo levels (why not)
+set undolevels=20000
+
+"Undo highlight after search
+nnoremap <CR> :noh<CR><CR>
+
+set undofile
+set undodir=~/.tmp/
+
 "inoremap jj <Esc>
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
+
+" Flake8
+let g:flake8_max_line_length=100
+
+" Syntastic
+" On by default, turn it off for html
+let g:syntastic_mode_map = { 'mode': 'active',
+    \ 'active_filetypes': [],
+    \ 'passive_filetypes': ['html'] }
+
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801"'
+let g:syntastic_javascript_checkers = ['jshint']
+" Better :sign interface symbols
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '!'
 
 " Vundle
 set rtp+=~/.vim/bundle/vundle/
@@ -309,7 +342,7 @@ call vundle#rc()
 " required!
 Bundle 'gmarik/vundle'
 " My bundles here:
-Bundle 'Valloric/YouCompleteMe'
+" Bundle 'Valloric/YouCompleteMe'
 
 " YouCompleteMe
 " let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'

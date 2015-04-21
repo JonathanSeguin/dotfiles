@@ -37,11 +37,12 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # other
-alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+#alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 alias watch="watchr ~/.watchr/rails.watcher"
 alias rsync="rsync --progress"
 alias jekyll="jekyll --pygments --server --auto"
 alias rt="ruby -Itest"
+alias h="history 10"
 
 # commands starting with % for pasting from web
 alias %=' '
