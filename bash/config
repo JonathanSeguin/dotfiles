@@ -1,3 +1,4 @@
+#!/bin/bash
 export EDITOR="vim"
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -12,9 +13,16 @@ function parse_git_branch {
   echo "("${ref#refs/heads/}")"
 }
 
+function parse_screen_STY {
+  if [ "$STY" == "" ]
+  then echo ""
+  else echo "("${STY}") "
+  fi
+}
+
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]"
 WHITE="\[\033[0;97m\]"
 
-PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$WHITE\$ "
+PS1="$RED\$(date +%H:%M) \w $GREEN$(parse_screen_STY)$YELLOW\$(parse_git_branch)$WHITE\$ "
