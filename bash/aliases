@@ -4,3 +4,5 @@ function pr { cd ~/platform_repos; }
 
 # misc
 alias reload='. ~/.bash_profile'
+
+alias vim='nvim'

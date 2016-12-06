@@ -3,18 +3,31 @@
 set nocompatible
 set mouse=a
 
+" Horizontal rule toggle on mode switch
+:autocmd InsertEnter,InsertLeave * set cul!
+
+" TEMP FIX
+" let g:jedi#show_call_signatures = "0"
+" let g:jedi#popup_on_dot = 0
+
 " Shorten messages and don't show intro
 set shortmess=atI
+
+" keep cursor in middle of the screen
+set scrolloff=999
 
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-set runtimepath=~/.vim/,~/.vim,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/vim72,/usr/share/vim/vimfiles,/usr/share/vim/addons/after,~/.vim/after*/
+set runtimepath=~/.vim/,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/vim72,/usr/share/vim/vimfiles,/usr/share/vim/addons/after,~/.vim/after*/
+"set runtimepath=~/.vim/,/etc/vim
 
 " set guifont=Droid_Sans_Mono_for_Powerline_12
 
 " (linux) remember buffer in X clipboard on exit
-autocmd VimLeave * call system("xsel -ib", getreg('+'))
+autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
+vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
 
 if $COLORTERM == 'gnome-terminal'
   set t_Co=256
@@ -23,14 +36,14 @@ endif
 set clipboard^=unnamedplus
 set nobackup
 set nowritebackup
-set history=50		" keep 50 lines of command line history
+set history=100		" keep 50 lines of command line history
 set ruler		    " show the cursor position all the time
 set showcmd		    " display incomplete commands
 set incsearch		" do incremental searching
 set visualbell
 set directory=~/.tmp
 set nowrap
-set omnifunc=syntaxcomplete#Complete
+"set omnifunc=syntaxcomplete#Complete
 
 colorscheme pablo
 
@@ -41,16 +54,20 @@ map Q gq
 " text is lost and it only works for putting the current register.
 "vnoremap p "_dp
 
+au BufRead,BufNewFile *.makojs setfiletype javascript
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 "    call pathogen#runtime_append_all_bundles()
-execute pathogen#infect()
     " Enable file type detection.
     " Use the default filetype settings, so that mail gets 'tw' set to 72,
     " 'cindent' is on in C files, etc.
     " Also load indent files, to automatically do language-dependent indenting.
+
+    execute pathogen#infect()
+
     filetype plugin indent on
+    syntax on
 
     " Set File type to 'text' for files ending in .txt
     autocmd BufNewFile,BufRead *.txt setfiletype text
@@ -90,18 +107,37 @@ endif " has("autocmd")
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-    syntax on
-    set hlsearch
-endif
+"if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+"    syntax on
+"    set hlsearch
+"endif
+
+syntax on
+set hlsearch
 
 " if has("folding")
 "   set foldenable
 "   set foldmethod=syntax
 "   set foldlevel=1
 "   set foldnestmax=2
-"   set foldtext=strpart(getline(v:foldstart),0,50).'\\\\ ...\\\\ '.substitute(getline(v:foldend),'^[\\\\ #]*','','g').'\\\\ '
+"   set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
 " endif
+
+" folding
+"set foldmethod=indent
+"set foldlevelstart=20
+
+" encoding settings {{{
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
+" }}}
 
 set tabstop=4
 set ts=4
@@ -117,6 +153,9 @@ set guitablabel=%!expand(\"\%:t\")
 " GUI scrollbar
 set guioptions-=r
 set guioptions-=L
+
+" clipboard
+set guioptions+=a
 
 " Always display the status line
 set laststatus=2
@@ -136,23 +175,6 @@ nore ; :
 
 "imap <A-left> <C-O>b
 "imap <A-right> <C-O>e
-
-" Leader shortcuts for Rails commands
-map <Leader>m :Rmodel
-map <Leader>c :Rcontroller
-map <Leader>v :Rview
-map <Leader>u :Runittest
-map <Leader>f :Rfunctionaltest
-map <Leader>tm :RTmodel
-map <Leader>tc :RTcontroller
-map <Leader>tv :RTview
-map <Leader>tu :RTunittest
-map <Leader>tf :RTfunctionaltest
-map <Leader>sm :RSmodel
-map <Leader>sc :RScontroller
-map <Leader>sv :RSview
-map <Leader>su :RSunittest
-map <Leader>sf :RSfunctionaltest
 
 map <F6> :NERDTreeToggle<cr>
 map ` :NERDTreeToggle<cr>
@@ -204,7 +226,7 @@ vmap P p :call setreg('"', getreg('0')) <CR>
 imap <C-F> <C-R>=expand("%")<CR>
 
 " Maps autocomplete to tab
-"imap <Tab> <C-N>
+" imap <Tab> <C-N>
 
 imap <D-Right> $
 
@@ -294,6 +316,9 @@ set completeopt=longest,menu
 set wildmode=list:longest,list:full
 set complete=.,t
 
+set showmatch
+
+
 " case only matters with mixed case expressions
 set ignorecase
 set smartcase
@@ -348,6 +373,8 @@ let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '!'
 
+let g:neocomplete#enable_at_startup = 1
+
 " Vundle
 " set rtp+=~/.vim/bundle/vundle/
 " call vundle#rc()
@@ -366,6 +393,9 @@ let g:syntastic_warning_symbol = '!'
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 set tags=./tags;
 
+" Home goes to first nonblank
+noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+imap <silent> <Home> <C-O><Home>
 
 " Latex-Box (OSX)
 let g:LatexBox_viewer = "open"
@@ -386,7 +416,7 @@ autocmd BufWritePre * :call StripTrailingWhitespaces()
 function! MyCalc(str)
     if exists("g:MyCalcRounding")
         return system("echo 'x=" . a:str . ";d=.5/10^" . g:MyCalcPresition
-                    \\\\. ";if (x<0) d=-d; x+=d; scale=" . g:MyCalcPresition . ";print x/1' | bc -l")
+                    \. ";if (x<0) d=-d; x+=d; scale=" . g:MyCalcPresition . ";print x/1' | bc -l")
     else
         return system("echo 'scale=" . g:MyCalcPresition . " ; print " . a:str . "' | bc -l")
     endif
@@ -396,21 +426,21 @@ endfunction
 let g:MyCalcPresition = 2
 " Comment this if you don't want rounding
 let g:MyCalcRounding = 1
-" Use \\\\C to replace the current line of math expression(s) by the value of the computation:
-map <silent> <Leader>c :s/.*/\\\\\\\\=MyCalc(submatch(0))/<CR>:noh<CR>
+" Use \C to replace the current line of math expression(s) by the value of the computation:
+map <silent> <Leader>c :s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
 " Same for a visual selection block
-vmap <silent> <Leader>c :B s/.*/\\\\\\\\=MyCalc(submatch(0))/<CR>:noh<CR>
-" With \\\\C= don't replace, but add the result at the end of the current line
-map <silent> <Leader>c= :s/.*/\\\\\\\\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+vmap <silent> <Leader>c :B s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
+" With \C= don't replace, but add the result at the end of the current line
+map <silent> <Leader>c= :s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
 " Same for a visual selection block
-vmap <silent> <Leader>c= :B s/.*/\\\\\\\\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
-" Try: :B s/.*/\\\\\\\\\\\\\\\\=MyCalc("1000 - " . submatch(0))/
+vmap <silent> <Leader>c= :B s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+" Try: :B s/.*/\=MyCalc("1000 - " . submatch(0))/
 " The concatenation is important, since otherwise it will try
 " to evaluate things like in ":echo 1000 - ' 1748.24'"
-vmap <Leader>c+ :B s/.*/\\\\\\\\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
-vmap <Leader>c- :B s/.*/\\\\\\\\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
-" With \\\\Cs you add a block of expressions, whose result appears in the command line
-vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\\\\\\\\n","+","g"))<CR>:silent :noh<CR>
+vmap <Leader>c+ :B s/.*/\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+vmap <Leader>c- :B s/.*/\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+" With \Cs you add a block of expressions, whose result appears in the command line
+vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\n","+","g"))<CR>:silent :noh<CR>
 " Try: :MyCalc 12.7 + sqrt(98)
 command! -nargs=+ MyCalc :echo MyCalc("<args>")
 
@@ -420,13 +450,12 @@ hi Cursorline cterm=NONE ctermbg=234 guibg=#1c1c1c
 
 highlight clear SignColumn
 
-" folding
-set foldmethod=indent
-set foldlevelstart=20
 
 " insert mode vertical line in term
-" let &t_SI .= "\\<Esc>[6 q"
-" let &t_EI .= "\\<Esc>[2 q"
+" let &t_SI .= \"<Esc>[6 q"
+" let &t_EI .= "\<Esc>[2 q"
+
+
 
 let g:PythonPathLoaded=1
 
