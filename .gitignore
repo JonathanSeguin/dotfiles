@@ -1,2 +1,8 @@
-vim/.netrwhist
-vim/.VimballRecord
+.config/nvim/.netrwhist
+.config/nvim/.VimballRecord
+.config/nvim/temp/
+.config/nvim/rollbacks
+.git/
+.DS_Store
+.svn
+.*.swp
