@@ -1,2 +1,0 @@
-3.0
-{'neobundle.vim': {'checked_time': 1461251918, 'installed_uri': 'https://github.com/Shougo/neobundle.vim.git', 'installed_path': '/u/seguinj/.config/nvim/bundle/neobundle.vim', 'revisions': {}, 'updated_time': 1461251918}, 'deoplete.nvim': {'checked_time': 1461251920, 'installed_uri': 'https://github.com/Shougo/deoplete.nvim.git', 'installed_path': '/u/seguinj/.config/nvim/bundle/deoplete.nvim', 'revisions': {'1461191794': '5428bf386325fa7e1faf204fd0395d12bc0d92fa'}, 'updated_time': '1461191794'}}

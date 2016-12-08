@@ -1,1 +1,0 @@
-/u/seguinj/.dotfiles/nvimrc
