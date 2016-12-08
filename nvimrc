@@ -1,40 +1,15 @@
 syntax on
-" DEIN
-if &compatible
-  set nocompatible               " Be iMproved
-endif
 
-" Required:
-set runtimepath^=/u/seguinj/.config/nvim//repos/github.com/Shougo/dein.vim
-
-" Required:
-call dein#begin(expand('/u/seguinj/.config/nvim/'))
-
-" Let dein manage dein
-" Required:
-call dein#add('Shougo/dein.vim')
-
-" Add or remove your plugins here:
-call dein#add('Shougo/neosnippet.vim')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('Shougo/deoplete.nvim')
-
-" You can specify revision/branch/tag.
-call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-
-" Required:
-call dein#end()
-
-
-" Required:
-filetype plugin indent on
-
-" If you want to install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
-
-"End dein Scripts-------------------------
+call plug#begin('~/.vim/plugged')
+" Make sure you use single quotes
+Plug 'junegunn/vim-easy-align'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'https://github.com/vim-airline/vim-airline'
+Plug 'https://github.com/airblade/vim-gitgutter'
+Plug 'https://github.com/altercation/vim-colors-solarized'
+Plug 'https://github.com/tomtom/tcomment_vim'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+call plug#end()
 
 set title
 
@@ -43,6 +18,9 @@ set title
 set nocompatible
 set mouse=a
 set ttyfast
+
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
 
 " TEMP FIX
 " let g:jedi#show_call_signatures = "0"
@@ -58,7 +36,7 @@ set backspace=indent,eol,start
 
 xnoremap p "_dP
 
-set runtimepath=~/.dotfiles/nvim/,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/vim72,/usr/share/vim/vimfiles,/usr/share/vim/addons/after,~/.vim/after*/
+"set runtimepath=~/.config/nvim/,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/vim72,/usr/share/vim/vimfiles,/usr/share/vim/addons/after,~/.vim/after*/
 "set runtimepath=~/.vim/,/etc/vim
 
 " set guifont=Droid_Sans_Mono_for_Powerline_12
