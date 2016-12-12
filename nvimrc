@@ -2,6 +2,9 @@ syntax on
 
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'https://github.com/ervandew/supertab'
+Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'https://github.com/vim-airline/vim-airline'
@@ -10,6 +13,7 @@ Plug 'https://github.com/altercation/vim-colors-solarized'
 Plug 'https://github.com/tomtom/tcomment_vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 call plug#end()
+
 
 set title
 
@@ -33,6 +37,8 @@ set scrolloff=1
 
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
+
+let g:deoplete#enable_at_startup = 1
 
 xnoremap p "_dP
 
@@ -90,6 +96,8 @@ map Q gq
 "vnoremap p "_dp
 
 au BufRead,BufNewFile *.makojs setfiletype javascript
+
+" au Filetype text,markdown setlocal dictionary+=/usr/share/dict/words
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -484,9 +492,6 @@ vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\n","+","g"))<CR>:silent
 " Try: :MyCalc 12.7 + sqrt(98)
 command! -nargs=+ MyCalc :echo MyCalc("<args>")
 
-" down here as it didn't seem to be applied if it appeared earlier in the file
-set cursorline
-hi Cursorline cterm=NONE ctermbg=234 guibg=#1c1c1c
 
 highlight clear SignColumn
 
@@ -498,8 +503,6 @@ highlight clear SignColumn
 
 set fillchars+=vert:│
 hi VertSplit cterm=NONE guibg=NONE
-
-
 
 let g:PythonPathLoaded=1
 
@@ -541,3 +544,7 @@ EOF
 
     let g:PythonPathLoaded = 0
 endfunction
+
+" down here as it didn't seem to be applied if it appeared earlier in the file
+set cursorline
+hi Cursorline cterm=NONE ctermbg=234 guibg=#1c1c1c

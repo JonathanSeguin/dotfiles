@@ -3,7 +3,7 @@ export PATH="$HOME/.local/bin:$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/loc
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export GEM_HOME=~/.gems
 #export PYTHONPATH=/u/seguinj/.local/lib/python2.6/site-packages
-export VIMRUNTIME=~/.config/nvim
+#export VIMRUNTIME=~/.config/nvim
 
 # export PATH="~/bin:~/.bin:/usr/local/homebrew/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/git/bin:/usr/bin:$PATH"
 # export PATH="$HOME/.rbenv/bin:$PATH"
