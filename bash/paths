@@ -1,5 +1,5 @@
 export EDITOR='nvim'
-export PATH="$HOME/.local/bin:$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/local/git/bin:/usr/local/cuda/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/local/git/bin:/usr/local/cuda/bin:$HOME/bin:/Users/seguinj/Library/Python/2.7/bin:$PATH"
 export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export GEM_HOME=~/.gems
 #export PYTHONPATH=/u/seguinj/.local/lib/python2.6/site-packages

@@ -12,3 +12,5 @@ cdlast () {
 alias reload='. ~/.bash_profile'
 
 alias vim='nvim'
+
+alias work='ssh binfo06'
