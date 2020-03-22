@@ -16,6 +16,8 @@ source ~/.bash/config
 #inclure python-2.7.6
 LD_LIBRARY_PATH=/usr/local/cuda-7.5/lib64:$LD_LIBRARY_PATH
 module load torque
+# module load python/3.4.4
+# module load python/2.7.6
 #LD_LIBRARY_PATH=/soft/bioinfo/linux_RH6/python-2.7.6/lib:$LD_LIBRARY_PATH
 #export PATH="/usr/local/cuda/bin:$HOME/.local/bin:$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/local/git/bin:$PATH"
 #export PATH="$HOME/.local/bin:$HOME/.bin:/usr/local/bin:/usr/local/sbin:/usr/local/git/bin:$PATH"
@@ -27,3 +29,5 @@ if [ -f ~/.localrc ]; then
   source ~/.localrc
 fi
 
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

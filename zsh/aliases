@@ -13,6 +13,9 @@ alias ll="ls -l"
 alias la='ls -A'
 alias sl='ls'
 
+# tree
+alias tree='tree -C'
+
 # git
 alias gl='git pull --rebase --stat'
 alias ga='git add'

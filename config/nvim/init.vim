@@ -2,7 +2,7 @@ call plug#begin('~/.config/nvim/plugged')
 " Make sure you use single quotes
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
-" Plug 'https://github.com/ervandew/supertab'
+Plug 'https://github.com/ervandew/supertab'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-airline/vim-airline-themes'
@@ -11,6 +11,10 @@ Plug 'https://github.com/airblade/vim-gitgutter'
 Plug 'https://github.com/altercation/vim-colors-solarized'
 Plug 'https://github.com/tomtom/tcomment_vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'https://github.com/kien/ctrlp.vim'
+Plug 'https://github.com/easymotion/vim-easymotion'
+Plug 'https://github.com/w0rp/ale'
+Plug 'morhetz/gruvbox'
 call plug#end()
 
 
@@ -21,18 +25,26 @@ set title
 set nocompatible
 set mouse=a
 set ttyfast
+set lazyredraw
+set nofsync
 
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 " deoplete tab
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" speed up ctrl p
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
 
 " omnifuncs
 augroup omnifuncs
   autocmd!
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -57,22 +69,24 @@ xnoremap p "_dP
 " set guifont=Droid_Sans_Mono_for_Powerline_12
 
 " (linux) remember buffer in X clipboard on exit
-autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
-vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
-vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+" autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
+" vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+" vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+"
+" function! ClipboardYank()
+"   call system('xclip -i -selection clipboard', @@)
+" endfunction
+" function! ClipboardPaste()
+"   let @@ = system('xclip -o -selection clipboard')
+" endfunction
+"
+" vnoremap <silent> y y:call ClipboardYank()<cr>
+" vnoremap <silent> d d:call ClipboardYank()<cr>
+" nnoremap <silent> p :call ClipboardPaste()<cr>p
+" onoremap <silent> y y:call ClipboardYank()<cr>
+" onoremap <silent> d d:call ClipboardYank()<cr>
 
-function! ClipboardYank()
-  call system('xclip -i -selection clipboard', @@)
-endfunction
-function! ClipboardPaste()
-  let @@ = system('xclip -o -selection clipboard')
-endfunction
 
-vnoremap <silent> y y:call ClipboardYank()<cr>
-vnoremap <silent> d d:call ClipboardYank()<cr>
-nnoremap <silent> p :call ClipboardPaste()<cr>p
-onoremap <silent> y y:call ClipboardYank()<cr>
-onoremap <silent> d d:call ClipboardYank()<cr>
 
 nnoremap <C-w>t :tabnew<CR>
 
@@ -94,8 +108,12 @@ set directory=~/.tmp
 set nowrap
 "set omnifunc=syntaxcomplete#Complete
 
-
+" set termguicolors
 colorscheme pablo
+
+" let background='dark'
+" let g:gruvbox_contrast_dark='hard'
+" colorscheme gruvbox
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -130,8 +148,8 @@ if has("autocmd")
     " Enable soft-wrapping for text files
     autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
 
-    autocmd FileType html,xml,xsl,php,jsp,eruby let b:closetag_html_style=1
-    autocmd FileType html,xml,xsl,php,jsp,eruby source ~/.vim/scripts/closetag.vim
+    "autocmd FileType html,xml,xsl,php,jsp,eruby let b:closetag_html_style=1
+    "autocmd FileType html,xml,xsl,php,jsp,eruby source ~/.vim/scripts/closetag.vim
 
     " Put these in an autocmd group, so that we can delete them easily.
     augroup vimrcEx
@@ -180,6 +198,22 @@ set hlsearch
 " folding
 "set foldmethod=indent
 "set foldlevelstart=20
+
+
+
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+"" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 " encoding settings {{{
 if has("multi_byte")
@@ -415,32 +449,21 @@ nnoremap <CR> :noh<CR><CR>
 nmap <F8> :TagbarToggle<CR>
 
 " Flake8
-let g:flake8_max_line_length=100
+" let g:flake8_max_line_length=100
 
-" Syntastic
+" Syntastic (kinda slows things down...)
 " On by default, turn it off for html
-let g:syntastic_mode_map = { 'mode': 'active',
-    \ 'active_filetypes': [],
-    \ 'passive_filetypes': ['html'] }
+" let g:syntastic_mode_map = { 'mode': 'active',
+"     \ 'active_filetypes': [],
+"     \ 'passive_filetypes': ['html'] }
+"
+" let g:syntastic_python_checkers = ['flake8']
+" let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801"'
+" let g:syntastic_javascript_checkers = ['jshint']
+" " Better :sign interface symbols
+" let g:syntastic_error_symbol = '✗'
+" let g:syntastic_warning_symbol = '!'
 
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801"'
-let g:syntastic_javascript_checkers = ['jshint']
-" Better :sign interface symbols
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '!'
-
-let g:neocomplete#enable_at_startup = 1
-
-" Vundle
-" set rtp+=~/.vim/bundle/vundle/
-" call vundle#rc()
-
-" let Vundle manage Vundle
-" required!
-"Bundle 'gmarik/vundle'
-" My bundles here:
-" Bundle 'Valloric/YouCompleteMe'
 
 " YouCompleteMe
 " let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
