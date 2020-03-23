@@ -2,12 +2,13 @@
 alias ..='cd ..'
 
 # ls
-#(Linux)
-alias ls="ls -G --color"
-alias l="ls -G --color"
-#(OSX)
-#alias ls="ls -G"
-#alias l="ls -G"
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    alias ls="ls -G --color"
+    alias l="ls -G --color"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    alias ls="ls -G"
+    alias l="ls -G"
+fi
 
 alias ll="ls -l"
 alias la='ls -A'
