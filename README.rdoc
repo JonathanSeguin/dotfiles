@@ -5,6 +5,6 @@ Must manually symlink .config/nvim otherwise .config will be overwritten on inst
 
 == Installation
 
-  git clone git://github.com/ryanb/dotfiles ~/.dotfiles
+  git clone git://github.com/JonathanSeguin/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles
   rake install
