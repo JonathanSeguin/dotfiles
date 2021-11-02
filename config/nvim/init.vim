@@ -5,8 +5,8 @@ Plug 'zchee/deoplete-jedi'
 Plug 'https://github.com/ervandew/supertab'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-easy-align'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'https://github.com/vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'https://github.com/airblade/vim-gitgutter'
 Plug 'https://github.com/altercation/vim-colors-solarized'
 Plug 'https://github.com/tomtom/tcomment_vim'
@@ -69,22 +69,22 @@ xnoremap p "_dP
 " set guifont=Droid_Sans_Mono_for_Powerline_12
 
 " (linux) remember buffer in X clipboard on exit
-" autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
-" vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
-" vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
-"
-" function! ClipboardYank()
-"   call system('xclip -i -selection clipboard', @@)
-" endfunction
-" function! ClipboardPaste()
-"   let @@ = system('xclip -o -selection clipboard')
-" endfunction
-"
-" vnoremap <silent> y y:call ClipboardYank()<cr>
-" vnoremap <silent> d d:call ClipboardYank()<cr>
-" nnoremap <silent> p :call ClipboardPaste()<cr>p
-" onoremap <silent> y y:call ClipboardYank()<cr>
-" onoremap <silent> d d:call ClipboardYank()<cr>
+autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
+vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+
+function! ClipboardYank()
+  call system('xclip -i -selection clipboard', @@)
+endfunction
+function! ClipboardPaste()
+  let @@ = system('xclip -o -selection clipboard')
+endfunction
+
+vnoremap <silent> y y:call ClipboardYank()<cr>
+vnoremap <silent> d d:call ClipboardYank()<cr>
+nnoremap <silent> p :call ClipboardPaste()<cr>p
+onoremap <silent> y y:call ClipboardYank()<cr>
+onoremap <silent> d d:call ClipboardYank()<cr>
 
 
 
@@ -95,7 +95,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-" set clipboard+=unnamedplus
+set clipboard+=unnamedplus
 " set clipboard=autoselect
 set nobackup
 set nowritebackup

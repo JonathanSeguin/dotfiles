@@ -29,7 +29,7 @@ GREEN="\[\033[0;32m\]"
 WHITE="\[\033[0;97m\]"
 
 #PS1="$RED\$(date +%H:%M) \w $GREEN$(parse_screen_STY)$YELLOW\$(parse_git_branch)$WHITE\$ "
-PS1="$RED\w $GREEN$(parse_screen_STY)$YELLOW\$(parse_git_branch)$WHITE\$ "
+PS1="\[\e]0;\W\a\]$RED\w $GREEN$(parse_screen_STY)$YELLOW\$(parse_git_branch)$WHITE\$ "
 
 
 # function now {
