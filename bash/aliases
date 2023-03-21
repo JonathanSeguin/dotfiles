@@ -1,14 +1,9 @@
 . ~/.zsh/aliases
 
-function pr { cd ~/platform_repos; }
+alias vim="nvim"
 
 cdlast () {
   set ./*/
   shift "$(($#-1))"
   cd "$1"
 }
-
-# misc
-alias reload='. ~/.bash_profile'
-
-alias vim='nvim'

@@ -1,5 +1,5 @@
 #!/bin/bash
-export EDITOR="vim"
+export EDITOR="nvim"
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
@@ -23,13 +23,36 @@ function parse_screen_STY {
   fi
 }
 
-RED="\[\033[0;31m\]"
+RED="\[\033[0;36m\]"
 YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]"
 WHITE="\[\033[0;97m\]"
 
 #PS1="$RED\$(date +%H:%M) \w $GREEN$(parse_screen_STY)$YELLOW\$(parse_git_branch)$WHITE\$ "
 PS1="\[\e]0;\W\a\]$RED\w $GREEN$(parse_screen_STY)$YELLOW\$(parse_git_branch)$WHITE\$ "
+
+
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+# export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+# export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk@11/include"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/jonathanseguin/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/jonathanseguin/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/jonathanseguin/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/jonathanseguin/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 
 # function now {

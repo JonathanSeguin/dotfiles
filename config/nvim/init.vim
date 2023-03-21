@@ -5,8 +5,11 @@ Plug 'zchee/deoplete-jedi'
 Plug 'https://github.com/ervandew/supertab'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-easy-align'
-Plug 'https://github.com/vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'beauwilliams/statusline.lua'
+Plug 'itchyny/lightline.vim'
+" Plug 'https://github.com/vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" Plug 'feline-nvim/feline.nvim'
 Plug 'https://github.com/airblade/vim-gitgutter'
 Plug 'https://github.com/altercation/vim-colors-solarized'
 Plug 'https://github.com/tomtom/tcomment_vim'
@@ -62,30 +65,41 @@ set scrolloff=1
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-xnoremap p "_dP
+" xnoremap p "_dP
 
-"set runtimepath=~/.config/nvim/,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/vim72,/usr/share/vim/vimfiles,/usr/share/vim/addons/after,~/.vim/after*/
 
+" set runtimepath=~/.config/nvim,/opt/homebrew/Cellar/neovim/1.8.3/share/nvim,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/addons/after,~/.vim/after*/
+" set runtimepath=~/.config/nvim,/opt/homebrew/Cellar/neovim/1.8.3/share/nvim,/etc/vim,/usr/share/vim/vimfiles,/usr/share/vim/addons,/usr/share/vim/addons/after,~/.vim/after*/
+" set runtimepath=~/.config/nvim/runtime
 " set guifont=Droid_Sans_Mono_for_Powerline_12
 
 " (linux) remember buffer in X clipboard on exit
-autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
-vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
-vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+" autocmd VimLeave * call system("echo -n $'" . escape(getreg(), "'") . "' | xsel -ib")
+" vmap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+" vmap <C-c> yy: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+"
+" function! ClipboardYank()
+"   " call system('xclip -i -selection clipboard', @@)
+"   call system('pbcopy', @@)
+" endfunction
+" function! ClipboardPaste()
+"   " let @@ = system('xclip -o -selection clipboard')
+"   let @@ = system('pbpaste')
+" endfunction
 
-function! ClipboardYank()
-  call system('xclip -i -selection clipboard', @@)
-endfunction
-function! ClipboardPaste()
-  let @@ = system('xclip -o -selection clipboard')
-endfunction
+" vnoremap <silent> y y:call ClipboardYank()<cr>
+" vnoremap <silent> d d:call ClipboardYank()<cr>
+" nnoremap <silent> p :call ClipboardPaste()<cr>
+" onoremap <silent> y y:call ClipboardYank()<cr>
+" onoremap <silent> d d:call ClipboardYank()<cr>
 
-vnoremap <silent> y y:call ClipboardYank()<cr>
-vnoremap <silent> d d:call ClipboardYank()<cr>
-nnoremap <silent> p :call ClipboardPaste()<cr>p
-onoremap <silent> y y:call ClipboardYank()<cr>
-onoremap <silent> d d:call ClipboardYank()<cr>
-
+" nnoremap <leader>p "+p
+" vnoremap <leader>p "+p
+" nnoremap <leader>P "+P
+" vnoremap <leader>P "+P
+" nnoremap <leader>y "+y
+" vnoremap <leader>y "+y
+" nnoremap <leader>Y "+y$
 
 
 nnoremap <C-w>t :tabnew<CR>
@@ -96,7 +110,6 @@ endif
 
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set clipboard+=unnamedplus
-" set clipboard=autoselect
 set nobackup
 set nowritebackup
 set history=100		" keep 50 lines of command line history
@@ -108,7 +121,7 @@ set directory=~/.tmp
 set nowrap
 "set omnifunc=syntaxcomplete#Complete
 
-" set termguicolors
+"set termguicolors
 colorscheme pablo
 
 " let background='dark'
@@ -243,7 +256,7 @@ set guioptions-=r
 set guioptions-=L
 
 " clipboard
-set guioptions+=a
+" set guioptions+=a
 
 " Always display the status line
 set laststatus=2
@@ -474,12 +487,8 @@ let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 set tags=./tags;
 
 " Home goes to first nonblank
-noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
-imap <silent> <Home> <C-O><Home>
-
-" Latex-Box (OSX)
-let g:LatexBox_viewer = "open"
-let g:LatexBox_latexmk_async=1
+" noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+5 ? '0' : '^'
+" imap <silent> <Home> <C-O><Home>
 
 " Strip Trailing Whitespaces
 function! StripTrailingWhitespaces()
@@ -492,37 +501,37 @@ function! StripTrailingWhitespaces()
 endfunction
 autocmd BufWritePre * :call StripTrailingWhitespaces()
 
-" visual block calculator
-function! MyCalc(str)
-    if exists("g:MyCalcRounding")
-        return system("echo 'x=" . a:str . ";d=.5/10^" . g:MyCalcPresition
-                    \. ";if (x<0) d=-d; x+=d; scale=" . g:MyCalcPresition . ";print x/1' | bc -l")
-    else
-        return system("echo 'scale=" . g:MyCalcPresition . " ; print " . a:str . "' | bc -l")
-    endif
-endfunction
-
-" Control the precision with this variable
-let g:MyCalcPresition = 2
-" Comment this if you don't want rounding
-let g:MyCalcRounding = 1
-" Use \C to replace the current line of math expression(s) by the value of the computation:
-map <silent> <Leader>c :s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
-" Same for a visual selection block
-vmap <silent> <Leader>c :B s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
-" With \C= don't replace, but add the result at the end of the current line
-map <silent> <Leader>c= :s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
-" Same for a visual selection block
-vmap <silent> <Leader>c= :B s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
-" Try: :B s/.*/\=MyCalc("1000 - " . submatch(0))/
-" The concatenation is important, since otherwise it will try
-" to evaluate things like in ":echo 1000 - ' 1748.24'"
-vmap <Leader>c+ :B s/.*/\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
-vmap <Leader>c- :B s/.*/\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
-" With \Cs you add a block of expressions, whose result appears in the command line
-vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\n","+","g"))<CR>:silent :noh<CR>
-" Try: :MyCalc 12.7 + sqrt(98)
-command! -nargs=+ MyCalc :echo MyCalc("<args>")
+" " visual block calculator
+" function! MyCalc(str)
+"     if exists("g:MyCalcRounding")
+"         return system("echo 'x=" . a:str . ";d=.5/10^" . g:MyCalcPresition
+"                     \. ";if (x<0) d=-d; x+=d; scale=" . g:MyCalcPresition . ";print x/1' | bc -l")
+"     else
+"         return system("echo 'scale=" . g:MyCalcPresition . " ; print " . a:str . "' | bc -l")
+"     endif
+" endfunction
+"
+" " Control the precision with this variable
+" let g:MyCalcPresition = 2
+" " Comment this if you don't want rounding
+" let g:MyCalcRounding = 1
+" " Use \C to replace the current line of math expression(s) by the value of the computation:
+" map <silent> <Leader>c :s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
+" " Same for a visual selection block
+" vmap <silent> <Leader>c :B s/.*/\=MyCalc(submatch(0))/<CR>:noh<CR>
+" " With \C= don't replace, but add the result at the end of the current line
+" map <silent> <Leader>c= :s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+" " Same for a visual selection block
+" vmap <silent> <Leader>c= :B s/.*/\=submatch(0) . " = " . MyCalc(submatch(0))/<CR>:noh<CR>
+" " Try: :B s/.*/\=MyCalc("1000 - " . submatch(0))/
+" " The concatenation is important, since otherwise it will try
+" " to evaluate things like in ":echo 1000 - ' 1748.24'"
+" vmap <Leader>c+ :B s/.*/\=MyCalc(' +' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+" vmap <Leader>c- :B s/.*/\=MyCalc(' -' . submatch(0))/<C-Left><C-Left><C-Left><Left>
+" " With \Cs you add a block of expressions, whose result appears in the command line
+" vmap <silent> <Leader>ct y:echo MyCalc(substitute(@0," *\n","+","g"))<CR>:silent :noh<CR>
+" " Try: :MyCalc 12.7 + sqrt(98)
+" command! -nargs=+ MyCalc :echo MyCalc("<args>")
 
 
 highlight clear SignColumn
@@ -536,47 +545,50 @@ highlight clear SignColumn
 set fillchars+=vert:│
 hi VertSplit cterm=NONE guibg=NONE
 
-let g:PythonPathLoaded=1
-
-function! LoadPythonPath()
-py <<EOF
-    # load PYTHONPATH into vim, this lets you hover over a module name
-    # and type 'gf' (for goto file) and open that file in vim. Useful
-    # and easier than rope for simple tasks
-    import os.path
-    import sys
-    import vim
-    for p in sys.path:
-        if os.path.isdir(p):
-            vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
-endfunction
-
-function! GetPythonPath()
-    if !exists("g:PythonPathLoaded")
-        call LoadPythonPath()
-        return
-    elseif g:PythonPathLoaded
-        return
-    else
-        call LoadPythonPath()
-    endif
-endfunction
-
-function! UnloadPythonPath()
-
-py <<EOF
-    # load PYTHONPATH into vim, this lets you hover over a module name
-    # and type 'gf' (for goto file) and open that file in vim. Useful
-    # and easier than rope for simple tasks
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path-=%s" % (p.replace(" ", r"\ ")))
-EOF
-
-    let g:PythonPathLoaded = 0
-endfunction
+" let g:PythonPathLoaded=1
+"
+" function! LoadPythonPath()
+" py <<EOF
+"     # load PYTHONPATH into vim, this lets you hover over a module name
+"     # and type 'gf' (for goto file) and open that file in vim. Useful
+"     # and easier than rope for simple tasks
+"     import os.path
+"     import sys
+"     import vim
+"     for p in sys.path:
+"         if os.path.isdir(p):
+"             vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+" EOF
+" endfunction
+"
+" function! GetPythonPath()
+"     if !exists("g:PythonPathLoaded")
+"         call LoadPythonPath()
+"         return
+"     elseif g:PythonPathLoaded
+"         return
+"     else
+"         call LoadPythonPath()
+"     endif
+" endfunction
+"
+" function! UnloadPythonPath()
+"
+" py <<EOF
+"     # load PYTHONPATH into vim, this lets you hover over a module name
+"     # and type 'gf' (for goto file) and open that file in vim. Useful
+"     # and easier than rope for simple tasks
+" for p in sys.path:
+"     if os.path.isdir(p):
+"         vim.command(r"set path-=%s" % (p.replace(" ", r"\ ")))
+" EOF
+"
+"     let g:PythonPathLoaded = 0
+" endfunction
 
 " down here as it didn't seem to be applied if it appeared earlier in the file
 set cursorline
-hi Cursorline cterm=NONE ctermbg=234 guibg=#1c1c1c
+hi Cursorline cterm=NONE ctermbg=235 guibg=#1c1c1c
+
+" let g:vim_fakeclip_tmux_plus=1
+
