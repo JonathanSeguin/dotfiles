@@ -16,6 +16,7 @@ Plug 'https://github.com/kien/ctrlp.vim'
 Plug 'https://github.com/easymotion/vim-easymotion'
 Plug 'https://github.com/w0rp/ale'
 Plug 'morhetz/gruvbox'
+Plug 'https://github.com/jkramer/vim-checkbox'
 call plug#end()
 
 
@@ -589,4 +590,5 @@ set cursorline
 hi Cursorline cterm=NONE ctermbg=235 guibg=#1c1c1c
 
 " let g:vim_fakeclip_tmux_plus=1
+
 
