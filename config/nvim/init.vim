@@ -17,9 +17,12 @@ Plug 'https://github.com/easymotion/vim-easymotion'
 Plug 'https://github.com/w0rp/ale'
 Plug 'morhetz/gruvbox'
 Plug 'https://github.com/jkramer/vim-checkbox'
-Plug 'petertriho/nvim-scrollbar'
+Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
 call plug#end()
 
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
 
 set title
 
@@ -64,6 +67,9 @@ set scrolloff=1
 
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
+
+let g:checkbox_states = [' ', '\~', 'X']
+let g:insert_checkbox = '^'
 
 " xnoremap p "_dP
 
@@ -590,10 +596,9 @@ hi VertSplit cterm=NONE guibg=NONE
 set cursorline
 hi Cursorline cterm=NONE ctermbg=235 guibg=#1c1c1c
 
+
+
 " let g:vim_fakeclip_tmux_plus=1
 "
-lua <<EOF
-require("scrollbar").setup()
-EOF
 
 
