@@ -5,6 +5,7 @@ Plug 'zchee/deoplete-jedi'
 Plug 'https://github.com/ervandew/supertab'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-easy-align'
+Plug 'svermeulen/vim-easyclip'
 " Plug 'itchyny/lightline.vim'
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -107,6 +108,9 @@ let g:insert_checkbox = '^'
 " vnoremap <leader>y "+y
 " nnoremap <leader>Y "+y$
 
+nnoremap dd "+dd
+vnoremap d "+d
+vnoremap c "+c
 
 nnoremap <C-w>t :tabnew<CR>
 
